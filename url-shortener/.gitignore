@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Docker Compose file
+docker-compose.yml
+!**/compose.yaml
+
+# Spring Boot application properties
+!**/src/main/resources/application.properties
+

@@ -1,10 +1,8 @@
-package com.example.url_shortener;
+package com.example.url_shortener.domain.web.controllers;
 
 import com.example.url_shortener.domain.entities.ShortUrl;
-import com.example.url_shortener.domain.repositories.ShortUrlRepository;
 import com.example.url_shortener.domain.service.ShortUrlService;
 import lombok.Data;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
