@@ -2,6 +2,7 @@ package com.example.url_shortener;
 
 import com.example.url_shortener.domain.entities.ShortUrl;
 import com.example.url_shortener.domain.repositories.ShortUrlRepository;
+import com.example.url_shortener.domain.service.ShortUrlService;
 import lombok.Data;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -14,15 +15,13 @@ import java.util.List;
 @Data
 public class HomeController {
 
-    private final ShortUrlRepository shortUrlRepository;
-    public HomeController(ShortUrlRepository shortUrlRepository) {
-        this.shortUrlRepository = shortUrlRepository;
-    }
+    private final ShortUrlService shortUrlService ;
+
 
     @GetMapping("/")
     public String Home(Model model) {
 
-        List<ShortUrl> shortUrls = shortUrlRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<ShortUrl> shortUrls = shortUrlService.findPublicShortUrls();
         model.addAttribute("shortUrls", shortUrls);
         model.addAttribute("baseUrl" ,"https://localhost:8080/");
         return "index";
