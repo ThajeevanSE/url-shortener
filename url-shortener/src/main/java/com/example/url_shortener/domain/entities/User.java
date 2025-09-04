@@ -7,7 +7,7 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
-
+//entity creation
 @Entity
 @Table(name = "users")
 @Data
