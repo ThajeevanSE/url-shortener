@@ -11,13 +11,4 @@ public class HomeController {
         model.addAttribute("title", "Thajee");
         return "index";
     }
-
-    @GetMapping("/about")
-    public String About() {
-        return "about";
-    }
-    @GetMapping("/layout")
-    public String Layout() {
-        return "layout";
-    }
 }
