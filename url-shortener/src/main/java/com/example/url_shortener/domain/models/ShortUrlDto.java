@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- * DTO for {@link com.sivalabs.urlshortener.domain.entities.ShortUrl}
+ * DTO for {@link com.example.url_shortener.domain.entities.ShortUrl}
  */
 public record ShortUrlDto(Long id, String shortKey, String originalUrl,
                           Boolean isPrivate, Instant expiresAt,

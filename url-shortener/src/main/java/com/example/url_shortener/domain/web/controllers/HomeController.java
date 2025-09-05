@@ -1,6 +1,7 @@
 package com.example.url_shortener.domain.web.controllers;
 
 import com.example.url_shortener.domain.entities.ShortUrl;
+import com.example.url_shortener.domain.models.ShortUrlDto;
 import com.example.url_shortener.domain.service.ShortUrlService;
 import lombok.Data;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class HomeController {
     @GetMapping("/")
     public String Home(Model model) {
 
-        List<ShortUrl> shortUrls = shortUrlService.findPublicShortUrls();
+        List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
         model.addAttribute("shortUrls", shortUrls);
         model.addAttribute("baseUrl" ,"https://localhost:8080/");
         return "index";
