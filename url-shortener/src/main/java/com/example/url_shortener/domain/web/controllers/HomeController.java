@@ -1,4 +1,5 @@
 package com.example.url_shortener.domain.web.controllers;
+import com.example.url_shortener.domain.models.CreateShortUrlCmd;
 import com.example.url_shortener.domain.models.ShortUrlDto;
 import com.example.url_shortener.domain.service.ShortUrlService;
 import com.example.url_shortener.domain.web.dtos.CreateShortUrlForm;
@@ -44,7 +45,15 @@ public class HomeController {
             model.addAttribute("baseUrl" ,"https://localhost:8080/");
             return "index";
         }
-        redirectAttributes.addFlashAttribute("successMessage", "Successfully Created Short-Url");
+        try{
+            CreateShortUrlCmd cmd = new CreateShortUrlCmd(createShortUrlForm.originalUrl());
+            var shortUrlDto=shortUrlService.createShortUrl(cmd);
+            redirectAttributes.addFlashAttribute("successMessage", "Successfully Created Short-Url"+"http://localhost/s/"+shortUrlDto.shortKey());
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("errorMessage", "failed to create Short-Url");
+        }
+
+
         return "redirect:/";
 
     }
