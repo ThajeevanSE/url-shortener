@@ -1,4 +1,5 @@
 package com.example.url_shortener.domain.web.controllers;
+import com.example.url_shortener.ApplicationProperties;
 import com.example.url_shortener.domain.models.CreateShortUrlCmd;
 import com.example.url_shortener.domain.models.ShortUrlDto;
 import com.example.url_shortener.domain.service.ShortUrlService;
@@ -20,6 +21,7 @@ import java.util.List;
 public class HomeController {
 
     private final ShortUrlService shortUrlService ;
+    private final ApplicationProperties properties;
 
 
     @GetMapping("/")
@@ -27,7 +29,7 @@ public class HomeController {
 
         List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
         model.addAttribute("shortUrls", shortUrls);
-        model.addAttribute("baseUrl" ,"https://localhost:8080/");
+        model.addAttribute("baseUrl" ,properties.baseUrl());
         model.addAttribute("createShortUrlForm" ,new CreateShortUrlForm(""));
         return "index";
     }
@@ -42,13 +44,13 @@ public class HomeController {
         if(bindingResult.hasErrors()){
             List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
             model.addAttribute("shortUrls", shortUrls);
-            model.addAttribute("baseUrl" ,"https://localhost:8080/");
+            model.addAttribute("baseUrl" ,properties.baseUrl());
             return "index";
         }
         try{
             CreateShortUrlCmd cmd = new CreateShortUrlCmd(createShortUrlForm.originalUrl());
             var shortUrlDto=shortUrlService.createShortUrl(cmd);
-            redirectAttributes.addFlashAttribute("successMessage", "Successfully Created Short-Url"+"http://localhost/s/"+shortUrlDto.shortKey());
+            redirectAttributes.addFlashAttribute("successMessage", "Successfully Created Short-Url"+properties.baseUrl()+"/s/"+shortUrlDto.shortKey());
         }catch (Exception e){
             redirectAttributes.addFlashAttribute("errorMessage", "failed to create Short-Url");
         }
