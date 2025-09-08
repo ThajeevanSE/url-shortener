@@ -14,6 +14,7 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -67,6 +68,20 @@ public class ShortUrlService {
             sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
         }
         return sb.toString();
+    }
+
+
+    public Optional<ShortUrlDto> accessShortUrl(String shortKey) {
+        Optional<ShortUrl> shortUrlOptional = shortUrlRepository.findByShortKey(shortKey);
+        if(shortUrlOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        ShortUrl shortUrl = shortUrlOptional.get();
+        if(shortUrl.getExpiresAt() != null && shortUrl.getExpiresAt().isBefore(Instant.now())) {
+            return Optional.empty();
+        }
+
+        return shortUrlOptional.map(entityMapper::toShortUrlDto);
     }
 
 
