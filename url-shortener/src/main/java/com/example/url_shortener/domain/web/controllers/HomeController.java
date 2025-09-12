@@ -1,5 +1,6 @@
 package com.example.url_shortener.domain.web.controllers;
 import com.example.url_shortener.ApplicationProperties;
+import com.example.url_shortener.domain.entities.User;
 import com.example.url_shortener.domain.models.CreateShortUrlCmd;
 import com.example.url_shortener.domain.models.ShortUrlDto;
 import com.example.url_shortener.domain.service.ShortUrlService;
@@ -25,11 +26,12 @@ public class HomeController {
 
     private final ShortUrlService shortUrlService ;
     private final ApplicationProperties properties;
+    private final SecurityUtils securityUtils;
 
 
     @GetMapping("/")
     public String Home(Model model) {
-
+        User currentUser = securityUtils.getCurrentUser();
         List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
         model.addAttribute("shortUrls", shortUrls);
         model.addAttribute("baseUrl" ,properties.baseUrl());
