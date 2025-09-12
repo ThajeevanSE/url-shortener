@@ -35,7 +35,7 @@ public class HomeController {
         List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
         model.addAttribute("shortUrls", shortUrls);
         model.addAttribute("baseUrl" ,properties.baseUrl());
-        model.addAttribute("createShortUrlForm" ,new CreateShortUrlForm(""));
+        model.addAttribute("createShortUrlForm" ,new CreateShortUrlForm("",false,null));
         return "index";
     }
     @PostMapping("/short-urls")
@@ -53,7 +53,13 @@ public class HomeController {
             return "index";
         }
         try{
-            CreateShortUrlCmd cmd = new CreateShortUrlCmd(createShortUrlForm.originalUrl());
+            Long userId = securityUtils.getCurrentUserId();
+            CreateShortUrlCmd cmd = new CreateShortUrlCmd(
+                    createShortUrlForm.originalUrl(),
+                    createShortUrlForm.isPrivate(),
+                    createShortUrlForm.expirationInDays(),
+                    userId
+            );
             var shortUrlDto=shortUrlService.createShortUrl(cmd);
             redirectAttributes.addFlashAttribute("successMessage", "Successfully Created Short-Url"+properties.baseUrl()+"/s/"+shortUrlDto.shortKey());
         }catch (Exception e){

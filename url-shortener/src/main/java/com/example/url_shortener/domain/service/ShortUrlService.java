@@ -5,6 +5,7 @@ import com.example.url_shortener.domain.entities.ShortUrl;
 import com.example.url_shortener.domain.models.CreateShortUrlCmd;
 import com.example.url_shortener.domain.models.ShortUrlDto;
 import com.example.url_shortener.domain.repositories.ShortUrlRepository;
+import com.example.url_shortener.domain.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class ShortUrlService {
     private ShortUrlRepository shortUrlRepository;
     private final EntityMapper entityMapper;
     private final ApplicationProperties properties;
+    private final UserRepository userRepository;
 
     public List<ShortUrlDto> findPublicShortUrls() {
 
@@ -42,10 +44,16 @@ public class ShortUrlService {
         var shortUrl = new ShortUrl();
         shortUrl.setOriginalUrl(cmd.originalUrl());
         shortUrl.setShortKey(shortKey);
-        shortUrl.setCreatedBy(null);
-        shortUrl.setIsPrivate(false);
+        if(cmd.userId() == null) {
+            shortUrl.setCreatedBy(null);
+            shortUrl.setIsPrivate(false);
+            shortUrl.setExpiresAt(Instant.now().plus(properties.defaultExpiryInDays(), DAYS));
+        } else {
+            shortUrl.setCreatedBy(userRepository.findById(cmd.userId()).orElseThrow());
+            shortUrl.setIsPrivate(cmd.isPrivate() != null && cmd.isPrivate());
+            shortUrl.setExpiresAt(cmd.expirationInDays() != null ? Instant.now().plus(cmd.expirationInDays(), DAYS) : null);
+        }
         shortUrl.setClickCount(0L);
-        shortUrl.setExpiresAt(Instant.now().plus(properties.defaultExpiryInDays(), DAYS));
         shortUrl.setCreatedAt(Instant.now());
         shortUrlRepository.save(shortUrl);
         return entityMapper.toShortUrlDto(shortUrl);
