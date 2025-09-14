@@ -11,10 +11,7 @@ import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -30,12 +27,12 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String Home(Model model) {
-        User currentUser = securityUtils.getCurrentUser();
-        List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
-        model.addAttribute("shortUrls", shortUrls);
-        model.addAttribute("baseUrl" ,properties.baseUrl());
-        model.addAttribute("createShortUrlForm" ,new CreateShortUrlForm("",false,null));
+    public String Home(
+            @RequestParam(defaultValue = "1") Integer page,
+            Model model) {
+        this.addShortUrlsDataToModel(model, page);
+        model.addAttribute("createShortUrlForm",
+                new CreateShortUrlForm("", false, null));
         return "index";
     }
     @PostMapping("/short-urls")
@@ -46,10 +43,8 @@ public class HomeController {
 
     )
     {
-        if(bindingResult.hasErrors()){
-            List<ShortUrlDto> shortUrls = shortUrlService.findPublicShortUrls();
-            model.addAttribute("shortUrls", shortUrls);
-            model.addAttribute("baseUrl" ,properties.baseUrl());
+        if(bindingResult.hasErrors()) {
+            this.addShortUrlsDataToModel(model, 1);
             return "index";
         }
         try{
