@@ -2,6 +2,7 @@ package com.example.url_shortener.domain.web.controllers;
 import com.example.url_shortener.ApplicationProperties;
 import com.example.url_shortener.domain.entities.User;
 import com.example.url_shortener.domain.models.CreateShortUrlCmd;
+import com.example.url_shortener.domain.models.PagedResult;
 import com.example.url_shortener.domain.models.ShortUrlDto;
 import com.example.url_shortener.domain.service.ShortUrlService;
 import com.example.url_shortener.domain.web.dtos.CreateShortUrlForm;
@@ -34,6 +35,11 @@ public class HomeController {
         model.addAttribute("createShortUrlForm",
                 new CreateShortUrlForm("", false, null));
         return "index";
+    }
+    private void addShortUrlsDataToModel(Model model, int pageNo) {
+        PagedResult<ShortUrlDto> shortUrls = shortUrlService.findAllPublicShortUrls(pageNo, properties.pageSize());
+        model.addAttribute("shortUrls", shortUrls);
+        model.addAttribute("baseUrl", properties.baseUrl());
     }
     @PostMapping("/short-urls")
     String createShortUrl(@ModelAttribute("createShortUrlForm") @Valid CreateShortUrlForm createShortUrlForm,
