@@ -1,9 +1,9 @@
 package com.example.url_shortener.domain.service;
 
-import com.sivalabs.urlshortener.domain.entities.User;
-import com.sivalabs.urlshortener.domain.models.CreateUserCmd;
-import com.sivalabs.urlshortener.domain.models.Role;
-import com.sivalabs.urlshortener.domain.repositories.UserRepository;
+import com.example.url_shortener.domain.entities.User;
+import com.example.url_shortener.domain.models.CreateUserCmd;
+import com.example.url_shortener.domain.models.Role;
+import com.example.url_shortener.domain.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
