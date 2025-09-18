@@ -31,7 +31,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(cmd.password()));
         user.setName(cmd.name());
         user.setRole(cmd.role());
-        user.setCreatedAt(Instant.now());
+        //user.setCreatedAt(Instant.now());
         userRepository.save(user);
     }
 }
