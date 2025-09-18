@@ -3,7 +3,7 @@ package com.example.url_shortener.domain.web.controllers;
 import com.example.url_shortener.domain.models.CreateUserCmd;
 import com.example.url_shortener.domain.models.Role;
 import com.example.url_shortener.domain.service.UserService;
-import com.example.url_shortener.web.dtos.RegisterUserRequest;
+import com.example.url_shortener.domain.web.dtos.RegisterUserRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
