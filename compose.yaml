@@ -1,9 +1,0 @@
-#services:
-#  postgres:
-#    image: 'postgres:17'
-#    environment:
-#      - 'POSTGRES_DB=url_shortener'
-#      - 'POSTGRES_PASSWORD=thajee2002'
-#      - 'POSTGRES_USER=postgres'
-#    ports:
-#      - '5432:5432'
