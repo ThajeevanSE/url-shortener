@@ -59,10 +59,7 @@ public class ShortUrlService {
         return PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
     }
 
-    /**
-     * IMPORTANT: Marked transactional so the mapping (which may access lazy associations,
-     * e.g. shortUrl.getCreatedBy().getName()) happens while the persistence session is open.
-     */
+
     @Transactional(Transactional.TxType.SUPPORTS) // read-only semantics, works with jakarta.transaction.Transactional
     public PagedResult<ShortUrlDto> getUserShortUrls(Long userId, int page, int pageSize) {
         Pageable pageable = getPageable(page, pageSize);
